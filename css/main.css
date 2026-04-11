@@ -82,6 +82,8 @@ html {
     height: 100vh;
     overflow-x: hidden;
 
+    background-color: var(--background-secondary);
+
     transition:
         --foreground var(--animation-time),
         --foreground_secondary var(--animation-time),
@@ -105,7 +107,6 @@ body {
     padding-left: 1em;
     padding-right: 1em;
 
-    background-color: var(--background-secondary);
     background-size: cover;
     background-attachment: scroll;
     background: linear-gradient(135deg, var(--background) 50%, var(--background-secondary));
