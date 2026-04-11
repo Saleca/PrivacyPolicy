@@ -1,27 +1,39 @@
 :root {
-    --dark: #111;
-    --dark-secondary: #333;
-    --dark-overlay: #0004;
+    --dark: #112;
+    --dark-secondary: #223;
+    --dark-accent: #447;
+    --dark-overlay: #4474;
+    --dark-overlay-secondary: #4471;
     --dark-link: cornflowerblue;
     --dark-link-visited: mediumslateblue;
 
-    --light: #bbb;
-    --light-secondary: #999;
-    --light-overlay: #fff4;
+    --light: #bcc;
+    --light-secondary: #cdd;
+    --light-accent: #559;
+    --light-overlay: #4494;
+    --light-overlay-secondary: #5592;
     --light-link: #00e;
     --light-link-visited: #518;
 
     --foreground: var(--dark);
     --foreground-secondary: var(--dark-secondary);
+    --foreground-accent: var(--dark-accent);
+    --foreground-overlay: var(--dark-overlay);
+    --foreground-overlay-secondary: var(--dark-overlay-secondary);
+
     --background: var(--light);
     --background-secondary: var(--light-secondary);
+    --background-accent: var(--light-accent);
     --background-overlay: var(--light-overlay);
-    --foreground-overlay: var(--dark-overlay);
+    --background-overlay-secondary: var(--light-overlay-secondary);
+
     --link: var(--light-link);
     --link-visited: var(--light-link-visited);
+    --icon-foreground: var(--foreground-accent);
 
     --border-width: 1px;
     --border-radius: 5px;
+    --border-radius-secondary: 10px;
     --scrollbar-width: 10px;
 
     --animation-time: .3s;
@@ -30,55 +42,36 @@
 html:has(#dark:checked) {
     --foreground: var(--light);
     --foreground-secondary: var(--light-secondary);
+    --foreground-accent: var(--light-accent);
+    --foreground-overlay: var(--light-overlay);
+    --foreground-overlay-secondary: var(--light-overlay-secondary);
+
     --background: var(--dark);
     --background-secondary: var(--dark-secondary);
+    --background-accent: var(--dark-accent);
     --background-overlay: var(--dark-overlay);
-    --foreground-overlay: var(--light-overlay);
+    --background-overlay-secondary: var(--dark-overlay-secondary);
+
     --link: var(--dark-link);
     --link-visited: var(--dark-link-visited);
-}
-
-html:has(#dark:checked) body {
-    --background-animated: #111;
-    --background-secondary-animated: #333;
-    --foreground-animated: #bbb;
 }
 
 @media (prefers-color-scheme: dark) {
     html:has(#device:checked) {
         --foreground: var(--light);
         --foreground-secondary: var(--light-secondary);
+        --foreground-accent: var(--light-accent);
         --background: var(--dark);
         --background-secondary: var(--dark-secondary);
-        --background-overlay: var(--dark-overlay);
-        --foreground-overlay: var(--light-overlay);
+        --background-accent: var(--dark-accent);
         --link: var(--dark-link);
         --link-visited: var(--dark-link-visited);
+        --background-overlay: var(--dark-overlay);
+        --background-overlay-secondary: var(--dark-overlay-secondary);
+        --foreground-overlay: var(--light-overlay);
+        --foreground-overlay-secondary: var(--light-overlay-secondary);
+
     }
-
-    html:has(#device:checked) body {
-        --background-animated: #111;
-        --background-secondary-animated: #333;
-        --foreground-animated: #bbb;
-    }
-}
-
-@property --background-animated {
-    syntax: '<color>';
-    initial-value: #bbb;
-    inherits: true;
-}
-
-@property --background-secondary-animated {
-    syntax: '<color>';
-    initial-value: #999;
-    inherits: true;
-}
-
-@property --foreground-animated {
-    syntax: '<color>';
-    initial-value: #111;
-    inherits: true;
 }
 
 * {
@@ -88,22 +81,34 @@ html:has(#dark:checked) body {
 html {
     height: 100vh;
     overflow-x: hidden;
+
+    transition:
+        --foreground var(--animation-time),
+        --foreground_secondary var(--animation-time),
+        --foreground_secondary var(--animation-time),
+        --background var(--animation-time),
+        --background-secondary var(--animation-time),
+        --link var(--animation-time),
+        --link-visited var(--animation-time),
+        --background-overlay var(--animation-time),
+        --background-overlay-secondary var(--animation-time),
+        --foreground-overlay var(--animation-time),
+        --foreground-overlay-secondary var(--animation-time);
 }
 
 body {
-    height: 100vh;
-    overflow-x: hidden;
+    height: inherit;
+    overflow-x: inherit;
     scroll-behavior: smooth;
 
-    background-color: var(--background);
     margin: 0;
+    padding-left: 1em;
+    padding-right: 1em;
 
-    transition:
-        background-color var(--animation-time),
-        --background-animated var(--animation-time),
-        --background-secondary-animated var(--animation-time),
-        --foreground-animated var(--animation-time);
-
+    background-size: cover;
+    background-attachment: scroll;
+    background: linear-gradient(135deg, var(--background) 50%, var(--background-secondary));
+    color: var(--foreground-secondary);
 }
 
 
@@ -115,16 +120,6 @@ body {
     width: 100%;
     margin: 0 auto;
 
-    padding-left: 1em;
-    padding-right: 1em;
-
-    background-color: var(--background);
-    color: var(--foreground);
-
-    transition:
-        background-color var(--animation-time),
-        color var(--animation-time),
-        border-color var(--animation-time);
 }
 
 #resizable {
@@ -132,7 +127,9 @@ body {
 }
 
 header {
-    background: linear-gradient(var(--background-animated) 66%, #0000);
+    background: linear-gradient(var(--background) 66%, transparent);
+    color: var(--foreground);
+
     position: sticky;
     top: 0;
     z-index: 10;
@@ -146,15 +143,23 @@ footer {
 
 main,
 footer {
-    background-color: var(--background);
-    transition: background-color var(--animation-time);
-
     padding-bottom: 2em;
     min-width: 100%;
 }
 
 main {
     margin: 0 auto;
+}
+
+section {
+    margin-top: 2em;
+    padding: 1em;
+    border: 1px solid var(--foreground-overlay-secondary);
+    border-radius: var(--border-radius-secondary);
+}
+
+section>section {
+    background: linear-gradient(0deg, var(--background-overlay-secondary), transparent 33%);
 }
 
 span {
@@ -167,6 +172,7 @@ h3,
 h4,
 h5,
 h6 {
+    color: var(--foreground);
     text-align: center;
     text-wrap: balance;
 }
@@ -181,7 +187,6 @@ p {
 
 a {
     color: var(--link);
-    transition: color var(--animation-time);
 }
 
 a:visited {
@@ -190,13 +195,16 @@ a:visited {
 
 button {
     background-color: var(--background);
-    color: var(--foreground);
-    border: 1px solid var(--foreground);
+    color: var(--foreground-accent);
+    border: 1px solid var(--foreground-accent);
     border-radius: var(--border-radius);
-    padding: .25em;
+    padding: .5em;
     cursor: pointer;
+}
 
-    transition: background-color var(--animation-time), color var(--animation-time), border-color var(--animation-time);
+button:hover {
+    background-color: var(--background-secondary);
+
 }
 
 .details {
@@ -211,7 +219,7 @@ button {
     hyphens: unset;
     text-indent: unset;
     text-align: center;
-    padding-bottom: 1.5em;
+    margin-bottom: 1.5em;
 }
 
 /*focus after h*/
@@ -223,14 +231,13 @@ h3+.focus {
 
 /*button focus*/
 button.focus {
-    padding: .25em;
     display: block;
     margin-left: auto;
     margin-right: auto;
 }
 
 hr {
-    border-color: var(--foreground-secondary);
+    border-color: var(--foreground-overlay);
     margin: 0;
 }
 
@@ -296,6 +303,7 @@ td>* {
 
 #page-path {
     margin: 0;
+    color: var(--foreground-secondary);
     font-family: 'Courier New', Courier, monospace;
     font-weight: bold;
     text-align: left;
@@ -303,13 +311,16 @@ td>* {
     hyphens: none;
     word-break: break-all;
     line-height: 1em;
+
 }
 
 #page-path a {
     color: inherit !important;
+    border-radius: var(--border-radius);
+    padding: 2px 4px;
     text-decoration-line: underline;
     text-decoration-style: dotted;
-    text-decoration-color: var(--foreground-secondary);
+    text-decoration-color: var(--foreground-accent);
     text-decoration-thickness: 1px;
 }
 
@@ -321,41 +332,6 @@ td>* {
 
 #page-path a:visited {
     color: inherit !important;
-}
-
-#load-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 1000;
-
-    color: var(--light);
-    background: var(--dark);
-
-    padding: 1em;
-    display: flex;
-    flex-direction: column;
-}
-
-#load-screen p {
-    text-align: left;
-    font-family: 'Courier New', Courier, monospace;
-    font-weight: bold;
-    line-height: 1em;
-    word-break: break-all;
-    white-space: break-spaces;
-
-    margin-top: 0;
-    margin-left: 0;
-    margin-right: auto;
-    margin-bottom: 0;
-    padding-bottom: 1em;
-
-    text-indent: unset;
-    hyphens: none;
-    overflow: hidden;
 }
 
 #unity-canvas {
@@ -372,7 +348,7 @@ input[type=email],
 textarea {
     background-color: var(--background);
     color: var(--foreground);
-    border-color: var(--foreground);
+    border-color: var(--foreground-accent);
     border-style: solid;
     border-radius: 5px;
     border-width: 1px;
@@ -397,11 +373,31 @@ textarea {
     color: red;
 }
 
+.icon-temp
+{
+    stroke: var(--foreground-accent);
+    fill: var(--foreground-accent);/*--background*/
+}
+
+/*
+.icon-temp:hover {
+    
+    fill: var(--background-secondary);
+}
+*/
+
+.icon {
+    fill: var(--background-secondary);
+    stroke: var(--foreground-accent);
+}
+
 #state-form {
     display: flex;
     justify-content: space-between;
     padding-bottom: 1em;
     padding-top: 1em;
+    margin: 0 auto;
+
     height: 60px;
     user-select: none;
 }
@@ -409,8 +405,16 @@ textarea {
 .state label {
     padding: .25em;
     cursor: pointer;
-    border: 1px solid var(--foreground);
     margin: 0;
+    border-top: 1px solid var(--foreground-accent);
+    border-bottom: 1px solid var(--foreground-accent);
+
+    background-color: var(--background);
+    color: var(--foreground-accent);
+}
+
+.state label:hover {
+    background-color: var(--background-secondary);
 }
 
 #dark:checked~.state label[for="dark"],
@@ -422,12 +426,24 @@ textarea {
 #explorer:checked~.state label[for="explorer"],
 #pt:checked~.state label[for="pt"],
 #en:checked~.state label[for="en"] {
-    background-color: var(--foreground);
+    background-color: var(--foreground-accent);
     color: var(--background);
 }
 
-#console-icon {
-    margin: auto auto;
+.corners-left {
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+    border-left: 1px solid var(--foreground-accent);
+}
+
+.corners-center {
+    border-radius: 0;
+}
+
+.corners-right {
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+
+    border-right: 1px solid var(--foreground-accent);
+
 }
 
 .toogle-icon {
@@ -437,7 +453,7 @@ textarea {
     border-style: solid;
     border-radius: 100%;
     padding-top: 4px;
-    border-color: var(--foreground);
+    border-color: var(--foreground-accent);
 
     display: flex;
     justify-content: center;
@@ -509,7 +525,7 @@ html:has(#explorer:checked) {
 @media (max-width: 400px) {
     .strech {
         flex-direction: column;
-        gap:10px;
+        gap: 10px;
     }
 }
 
@@ -545,7 +561,7 @@ html:has(#explorer:checked) {
 }
 
 ::-webkit-scrollbar-track {
-    border-color: var(--foreground-animated);
+    border-color: var(--foreground-secondary);
     border-width: var(--border-width);
     border-style: solid;
     border-radius: var(--border-radius);
@@ -554,13 +570,92 @@ html:has(#explorer:checked) {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--background-animated);
-    border-color: var(--foreground-animated);
+    background: var(--background);
+    border-color: var(--foreground-secondary);
     border-width: var(--border-width);
     border-style: solid;
     border-radius: var(--border-radius);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--background-secondary-animated);
+    background: var(--background-secondary);
+}
+
+
+@property --foreground {
+    syntax: '<color>';
+    initial-value: #000;
+    inherits: true;
+}
+
+@property --foreground-secondary {
+    syntax: '<color>';
+    initial-value: #000;
+    inherits: true;
+}
+
+@property --foreground-accent {
+    syntax: '<color>';
+    initial-value: #000;
+    inherits: true;
+}
+
+@property --icon-foreground {
+    syntax: '<color>';
+    initial-value: #000;
+    inherits: true;
+}
+
+@property --background {
+    syntax: '<color>';
+    initial-value: #000;
+    inherits: true;
+}
+
+@property --background-secondary {
+    syntax: '<color>';
+    initial-value: #000;
+    inherits: true;
+}
+
+@property --background-accent {
+    syntax: '<color>';
+    initial-value: #000;
+    inherits: true;
+}
+
+@property --foreground-overlay {
+    syntax: '<color>';
+    initial-value: #000;
+    inherits: true;
+}
+
+@property --foreground-overlay-secondary {
+    syntax: '<color>';
+    initial-value: #000;
+    inherits: true;
+}
+
+@property --background-overlay {
+    syntax: '<color>';
+    initial-value: #000;
+    inherits: true;
+}
+
+@property --background-overlay-secondary {
+    syntax: '<color>';
+    initial-value: #000;
+    inherits: true;
+}
+
+@property --link {
+    syntax: '<color>';
+    initial-value: #000;
+    inherits: true;
+}
+
+@property --link-visited {
+    syntax: '<color>';
+    initial-value: #000;
+    inherits: true;
 }

@@ -58,6 +58,7 @@ function getSetAnimationPreference(anim) {
 
 /** Configures the state of the page at start up. */
 function applyState(lang, theme) {
+  
   const langType = getKeyType(UserPref.LANG);
   if (lang) {
     localStorage.setItem(langType, lang);

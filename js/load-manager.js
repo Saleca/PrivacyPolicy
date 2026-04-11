@@ -3,60 +3,26 @@ const loadingEvents = {
     FOOTER_SCRIPT: 'footer-manager.js loaded',
     SNIPPET_SCRIPT: 'snippet-manager.js loaded',
     LOCAL_SNIPPETS_LOADED: 'local snippets loaded',
-    CONSOLE_ANIM_SCRIPT: 'console-animation.js loaded'
 }
 
 //expected url params = anim, theme, lang
 async function addBaseElements() {
-    const startTime = Date.now();
     const metaDocument = document.querySelector('meta[name="document"]');
     const metaUnityGame = document.querySelector('meta[name="unity-game"]');
     const metaHasKeys = document.querySelector('meta[name="has-keys"]');
     const metaHasModal = document.querySelector('meta[name="has-modal"]');
     const metaHasForm = document.querySelector('meta[name="has-form"]');
     const urlParams = new URLSearchParams(window.location.search);
-    const initialStyle = document.styleSheets[0];
-
-    let anim;
-    if (urlParams.has("anim")) {
-        if (urlParams.get("anim") === 'none') {
-            anim = 'none';
-        }
-        else if (urlParams.get("anim") === 'auto') {
-            anim = 'auto';
-        }
-    }
 
     addIcon("s.svg");
-    addStyleSheet("main.css");
 
     const stateScriptLoad = waitEvent(loadingEvents.STATE_SCRIPT);
     addScript("state-manager.js");
     await stateScriptLoad;
 
-    anim = getSetAnimationPreference(anim);
-
     if (metaDocument)//if exists its implicitly true 
     {
-        anim = 'none';
         addStyleSheet("print.css");
-    }
-
-    const consoleAnimScriptLoad = waitEvent(loadingEvents.CONSOLE_ANIM_SCRIPT);
-    if (anim === 'auto') {
-        addScript("console-animation.js");
-    }
-    else {
-        window.dispatchEvent(new Event(loadingEvents.CONSOLE_ANIM_SCRIPT));
-    }
-    await consoleAnimScriptLoad;
-
-    let loadingPromise;
-    let controller;
-    const navigationType = navigationAnalizer();
-    if (anim === 'auto') {
-        controller = new AbortController();
-        loadingPromise = loadingAnimation(navigationType, controller.signal);
     }
 
     const main = document.querySelector('main');
@@ -69,10 +35,9 @@ async function addBaseElements() {
     resizable.id = 'resizable';
     page.appendChild(resizable);
 
-    const headedLoad = injectLocalSnippet(resizable, componentPath('header'));
-    await headedLoad;
-    applyState(urlParams.get("lang"), urlParams.get("theme"));
-    setConsoleIconLogic(anim);
+    const headerLoad = injectLocalSnippet(resizable, componentPath('header'));
+    await headerLoad;
+
     addPagePath();
 
     resizable.appendChild(main);
@@ -91,14 +56,6 @@ async function addBaseElements() {
         addStyleSheet("keys.css");
     }
 
-    if (metaUnityGame) {
-        addScriptAbs(
-            "/resources/files/WebGL_Snake_Explorer_Build/Builds.loader.js",
-            function () {
-                addScript("initialize-unity-player.js");
-            });
-    }
-
     if (metaHasForm) {
         addScript("submission-form.js");
     }
@@ -112,21 +69,23 @@ async function addBaseElements() {
     await localSnippetsLoad;
 
     await footerScriptLoad;
+
     resizePage();
     scrollToTop();
 
-    if (initialStyle) {
-        initialStyle.disabled = true;
+    const stateLoad = injectLocalSnippet(null, componentPath('state'));
+    await stateLoad;
+    document.getElementById('disposable_theme')?.remove();
+    applyState(urlParams.get("lang"), urlParams.get("theme"));
+
+    if (metaUnityGame) {
+        addScriptAbs(
+            "/resources/files/WebGL_Snake_Explorer_Build/Builds.loader.js",
+            function () {
+                addScript("initialize-unity-player.js");
+            });
     }
 
-    if (anim === 'auto') {
-        await loadingPromise;
-        if (Date.now() - startTime < 2000) {
-            await new Promise(resolve => setTimeout(resolve, 5000 - (Date.now() - startTime)));
-        }
-        controller.abort();
-        clearLoadScreen();
-    }
 }
 
 const NavigationType = {
@@ -287,11 +246,16 @@ async function injectLocalSnippet(container, path, replace) {
     }
     const content = await response.text();
 
-    if (replace) {
-        container.replaceChildren();
-    }
+    if (container) {
+        if (replace) {
+            container.replaceChildren();
+        }
 
-    container.insertAdjacentHTML('beforeend', content);
+        container.insertAdjacentHTML('beforeend', content);
+    }
+    else {
+        document.body.insertAdjacentHTML('afterbegin', content);
+    }
 
     window.dispatchEvent(new Event(path));
     return promise;

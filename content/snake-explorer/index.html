@@ -12,7 +12,8 @@ title: Snake Explorer
     <meta name="has-keys" content="true">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page.title }}</title>
-    <link rel="stylesheet" type="text/css" href="/css/init-black.css">
+    <script src="/js/init-theme.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
     <script src="/js/load-manager.js" defer></script>
 </head>
 
@@ -46,11 +47,11 @@ title: Snake Explorer
                 <input type="radio" id="touch" name="control-type" value="touch" hidden>
                 <input type="radio" id="keys" name="control-type" value="keys" hidden checked>
                 <div class="flex state control-type">
-                    <label for="touch" onclick="">
+                    <label class="corners-left" for="touch" onclick="">
                         <div class="en"> Touch screen </div>
                         <div class="pt"> Ecra tatil </div>
                     </label>
-                    <label for="keys" onclick="">
+                    <label class="corners-right" for="keys" onclick="">
                         <div class="en"> Keyboard </div>
                         <div class="pt"> Teclado </div>
                     </label>
@@ -58,11 +59,11 @@ title: Snake Explorer
                 <input type="radio" id="classic" name="game-type" value="classic" hidden>
                 <input type="radio" id="explorer" name="game-type" value="explorer" hidden checked>
                 <div class="flex state game-type">
-                    <label for="classic">
+                    <label class="corners-left" for="classic">
                         <div class="en"> Classic </div>
                         <div class="pt"> Classico </div>
                     </label>
-                    <label for="explorer">
+                    <label class="corners-right" for="explorer">
                         <div class="en"> Explorer </div>
                         <div class="pt"> Aventura </div>
                     </label>
@@ -137,7 +138,8 @@ title: Snake Explorer
                             </div>
                             <div class="touch-controls">
                                 <div class="key-group">
-                                    <div data-path="/resources/icons/VerticalSwipeAnimation.svg">Vertical swipe gesture
+                                    <div data-path="/resources/icons/VerticalSwipeAnimation.svg">Vertical swipe
+                                        gesture
                                     </div>
                                 </div>
                                 <div class="key-group">
@@ -203,6 +205,7 @@ title: Snake Explorer
         <div class="pt">
             <p><a href="/resources/files/Snake_Explorer_Windows_Installer.exe">Transferir</a> para windows</p>
         </div>
+
     </main>
 </body>
 
