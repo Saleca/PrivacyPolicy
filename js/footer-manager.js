@@ -9,7 +9,7 @@ function resizePage() {
   if (minHeight >= resizable.offsetHeight-10) {
     console.log("resizing");
     var hiddenContent = document.getElementById("hidden-content");
-    resizable.style.minHeight = (minHeight + hiddenContent.offsetHeight+1).toString() + "px";
+    resizable.style.minHeight = (minHeight + 1).toString() + "px";
     scrollToTop();
   }
 }

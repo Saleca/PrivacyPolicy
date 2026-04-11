@@ -1,21 +1,9 @@
 :root {
-    --dark-key-dark-accent: #222;
-    --dark-key: #333;
-    --dark-key-light-accent: #444;
-    --dark-key-text: #bbb;
-    --dark-key-shadow: #111;
-
-    --light-key-dark-accent: #777;
-    --light-key: #888;
-    --light-key-light-accent: #999;
-    --light-key-text: #444;
-    --light-key-shadow: #aaa;
-
-    --key: var(--light-key);
-    --key-dark-accent: var(--light-key-dark-accent);
-    --key-light-accent: var(--light-key-light-accent);
-    --key-text: var(--light-key-text);
-    --key-shadow: var(--light-key-shadow);
+    --key: var(--background-overlay-secondary);
+    --key-dark-accent: var(--background-overlay);
+    --key-light-accent: var(--foreground-overlay);
+    --key-text: var(--foreground-secondary);
+    --key-shadow: var(--background-overlay-secondary);
 
     --key-width: 45px;
     --horizontal-margin: 2px;
@@ -30,6 +18,7 @@
     margin: var(--vertical-margin) var(--horizontal-margin);
     padding: 4px;
 
+    font-family: Helvetica, Arial, sans-serif;
     font-size: 18px;
     line-height: var(--key-width);
     text-align: center;
@@ -75,22 +64,4 @@
 
 .key.pressed {
     transform: scale(0.95, 0.95);
-}
-
-html:has(#dark:checked) {
-    --key: var(--dark-key);
-    --key-dark-accent: var(--dark-key-dark-accent);
-    --key-light-accent: var(--dark-key-light-accent);
-    --key-text: var(--dark-key-text);
-    --key-shadow: var(--dark-key-shadow);
-}
-
-@media (prefers-color-scheme: dark) {
-    html:has(#device:checked) {
-        --key: var(--dark-key);
-        --key-dark-accent: var(--dark-key-dark-accent);
-        --key-light-accent: var(--dark-key-light-accent);
-        --key-text: var(--dark-key-text);
-        --key-shadow: var(--dark-key-shadow);
-    }
 }
