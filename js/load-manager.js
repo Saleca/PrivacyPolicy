@@ -73,21 +73,21 @@ async function addBaseElements() {
     await footerScriptLoad;
 
     resizePage();
-    scrollToTop();
-
+    
     const stateLoad = injectLocalSnippet(null, componentPath('state'));
     await stateLoad;
     document.getElementById('disposable_theme')?.remove();
     applyState(urlParams.get("lang"), urlParams.get("theme"));
-
+    
     if (metaUnityGame) {
         addScriptAbs(
             "/resources/files/WebGL_Snake_Explorer_Build/Builds.loader.js",
             function () {
                 addScript("initialize-unity-player.js");
             });
-    }
-
+        }
+        
+        scrollToTop();
 }
 
 const NavigationType = {
