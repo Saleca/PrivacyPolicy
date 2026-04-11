@@ -25,8 +25,6 @@ async function addBaseElements() {
         addStyleSheet("print.css");
     }
 
-    navigationAnalizer();
-
     const main = document.querySelector('main');
 
     const page = document.createElement('div');
@@ -91,32 +89,6 @@ async function addBaseElements() {
 
 }
 
-const NavigationType = {
-    RELOAD: 'reload',
-    NAVIGATION: 'navigation'
-};
-
-/** Analizes navigation type */
-function navigationAnalizer() {
-    const navEntries = performance.getEntriesByType('navigation');
-
-    if (navEntries.length > 0) {
-        switch (navEntries[0].type) {
-            case 'reload':
-                return NavigationType.RELOAD;
-            case 'back_forward':
-            case 'navigate':
-                return manageNavigation();
-        }
-    }
-}
-
-/** Manages navigation */
-function manageNavigation() {
-    addPathToNavigationStack(getPath());
-    return NavigationType.NAVIGATION;
-}
-
 function getPath() {
     let path = window.location.href;
 
@@ -130,9 +102,9 @@ function getPath() {
       path = path.replace(/^.*saleca.github.io\/Home\//, '');
       }
       //*/
-    //* live server
-    if (path.includes('127.0.0.1:5500/')) {
-        path = window.location.href.replace(/^.*127\.0\.0\.1:5500\//, '');
+    /* live server
+    if (path.includes('127.0.0.1:3000/')) {
+        path = window.location.href.replace(/^.*127\.0\.0\.1:3000\/%5Ccontent\//, '');
     }
     //*/
 
@@ -168,37 +140,9 @@ function getPath() {
     return path;
 }
 
-/** Adds path to navigation stack. */
-function addPathToNavigationStack(path = '\\') {
-    let navigationStack = JSON.parse(sessionStorage.getItem('navigation-stack')) || [];
-    navigationStack.push(path);
-    sessionStorage.setItem('navigation-stack', JSON.stringify(navigationStack));
-    //console.info('Navigation stack updated.');
-}
-
-/** @returns All items from the navigation stack. */
-function getAllNavigationItems() {
-    let navigationStack = JSON.parse(sessionStorage.getItem('navigation-stack')) || [];
-    if (navigationStack.length === 0) {
-        addPathToNavigationStack();
-        navigationStack = JSON.parse(sessionStorage.getItem('navigation-stack'));
-    }
-
-    /*
-    console.info('navigationStack:\n' + navigationStack.join('\n') + '\n----------------');
-    //*/
-
-    return navigationStack;
-}
-
-function getCurrentPath() {
-    const navigationItems = getAllNavigationItems();
-    return navigationItems[navigationItems.length - 1];
-}
-
 function addPagePath() {
     const pagePathElement = document.getElementById('page-path');
-    const path = getCurrentPath();
+    const path = getPath();
     if (path !== '\\') {
         const homeLink = document.createElement('a');
         homeLink.href = "/";
@@ -228,15 +172,6 @@ function addPagePath() {
         });
     }
     pagePathElement.appendChild(document.createTextNode('>'));
-}
-
-function clearLoadScreen() {
-    const loadScreen = document.getElementById('load-screen');
-    loadScreen.style.background = `transparent`;
-    loadScreen.style.color = 'transparent';
-    setTimeout(() => {
-        document.body.removeChild(loadScreen);
-    }, 300);
 }
 
 async function injectLocalSnippet(container, path, replace) {
