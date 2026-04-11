@@ -25,6 +25,8 @@ async function addBaseElements() {
         addStyleSheet("print.css");
     }
 
+    navigationAnalizer();
+
     const main = document.querySelector('main');
 
     const page = document.createElement('div');

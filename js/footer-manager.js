@@ -8,7 +8,6 @@ function resizePage() {
   //check why size is not working
   if (minHeight >= resizable.offsetHeight-10) {
     console.log("resizing");
-    var hiddenContent = document.getElementById("hidden-content");
     resizable.style.minHeight = (minHeight + 1).toString() + "px";
     scrollToTop();
   }
