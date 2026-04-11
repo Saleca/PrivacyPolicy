@@ -19,4 +19,9 @@ function scrollToTop() {
 }
 
 window.dispatchEvent(new Event(loadingEvents.FOOTER_SCRIPT));
+
+const layoutObserver = new ResizeObserver(() => {
+  resizePage();
+});
+layoutObserver.observe(document.querySelector("main"));
 window.addEventListener("resize", (e) => resizePage());
