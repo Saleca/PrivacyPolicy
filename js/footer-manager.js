@@ -6,10 +6,9 @@ function resizePage() {
   var minHeight = window.innerHeight - footer.offsetHeight;
 
   //check why size is not working
-  if (minHeight >= resizable.offsetHeight-10) {
+  if (minHeight >= resizable.offsetHeight - 10) {
     console.log("resizing");
     resizable.style.minHeight = (minHeight + 1).toString() + "px";
-    scrollToTop();
   }
 }
 
