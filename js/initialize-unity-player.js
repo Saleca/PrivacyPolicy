@@ -16,15 +16,27 @@ if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
 //*/
 
 var baseUrl = "/resources/files/WebGL_Snake_Explorer_Build/";
-createUnityInstance(document.querySelector("#unity-canvas"), {
-    arguments: [],
-    dataUrl: baseUrl + "Builds.data",
-    frameworkUrl: baseUrl + "Builds.framework.js",
-    codeUrl: baseUrl + "Builds.wasm",
-    streamingAssetsUrl: "StreamingAssets",
-    companyName: "saleca",
-    productName: "Snake Explorer",
-    productVersion: "0.1",
-    // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
-    // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
-});
+const loading_bar = document.querySelector("#loading-bar");
+createUnityInstance(
+    document.querySelector("#unity-canvas"),
+    //config
+    {
+        arguments: [],
+        dataUrl: baseUrl + "Builds.data",
+        frameworkUrl: baseUrl + "Builds.framework.js",
+        codeUrl: baseUrl + "Builds.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "saleca",
+        productName: "Snake Explorer",
+        productVersion: "0.1",
+        // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
+        // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
+    },
+    //loading
+    (progress) => {
+        loading_bar.innerHTML = `Loading: ${Math.round(progress * 100)}%`;
+    }).then((unityInstance) => {
+        loading_bar.style.display = "none";
+    }).catch((message) => {
+        alert(message);
+    });

@@ -486,19 +486,19 @@ textarea {
 
 .icon-temp {
     filter: drop-shadow(2px 3px 0 var(--background-overlay));
-    transition: transform .3s ease;
+    transition: transform .2s ease;
 }
 
 .icon-temp:active {
-    filter: drop-shadow(1px 1px 0 var(--background-overlay));
-    transform: translateY(1px);
+    filter: drop-shadow(1px 2px 0 var(--background-overlay));
+    transform: translateY(2px);
 }
 
 .state label,
 summary,
 button {
     box-shadow: 2px 3px 0 var(--background-overlay);
-    transition: transform .3s ease;
+    transition: transform .2s ease;
 }
 
 button:active,
@@ -512,8 +512,8 @@ summary:active,
 #explorer:checked~.state label[for="explorer"],
 #pt:checked~.state label[for="pt"],
 #en:checked~.state label[for="en"] {
-    box-shadow: 1px 1px 0 var(--background-overlay);
-    transform: translateY(1px);
+    box-shadow: 1px 2px 0 var(--background-overlay);
+    transform: translateY(2px);
 }
 
 .corners-left {
